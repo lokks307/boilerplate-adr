@@ -10,7 +10,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func getDjsonFromBody(ctx echo.Context, dvKey string) (*djson.DJSON, error) {
+func GetDjsonFromBody(ctx echo.Context, dvKey string) (*djson.DJSON, error) {
 	if ctx.Request().Body == nil {
 		return nil, e.ActionErrGetDjsonFromBody1
 	}
