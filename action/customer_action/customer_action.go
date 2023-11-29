@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/lokks307/adr-boilerplate/domain/usecase"
 	"github.com/lokks307/adr-boilerplate/responder"
-	"github.com/lokks307/go-util/djson"
+	"github.com/lokks307/djson/v2"
 )
 
 func EchoHello(ctx echo.Context) error {
@@ -21,12 +21,12 @@ func GetCustomerInfo(ctx echo.Context) error {
 		return responder.TxtResponder.Response(ctx, http.StatusBadRequest, "")
 	}
 
-	customer, err := usecase.NewCustomerUsecase().ReadCustomerByID(cidInt)
+	customer, err := usecase.Customer().ReadCustomerByID(cidInt)
 	if err != nil {
 		return responder.TxtResponder.Response(ctx, http.StatusNotFound, "")
 	}
 
-	res := djson.NewDJSON().Put(djson.Object{
+	res := djson.New().Put(djson.Object{
 		"id":      customer.CustomerId,
 		"name":    customer.FirstName + " " + customer.LastName,
 		"company": customer.Company.String,

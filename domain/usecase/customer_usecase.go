@@ -36,7 +36,7 @@ func getInstance() *customerUsecase {
 	return customerInstance
 }
 
-func NewCustomerUsecase() domain.CustomerUsecase {
+func Customer() domain.CustomerUsecase {
 	return getInstance()
 }
 
@@ -51,3 +51,6 @@ func (a *customerUsecase) ReadCustomerByID(cid int64) (*models.Customer, error) 
 
 	return found, nil
 }
+
+// tx에 대한 고민이 더해져야 한다. 지금은 잘 이해하지 못하고 있는 것 같다.
+// mediease API에서  DoInTransaction을 검색해서 찾아볼 것

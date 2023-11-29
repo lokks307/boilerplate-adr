@@ -17,3 +17,5 @@ type CustomerUsecase interface {
 	// Store(exec boil.ContextExecutor, customer *models.Customer) error
 	// Delete(exec boil.ContextExecutor, id int64) error
 }
+
+// join이나 예외상황이 생겼을 때 어떻게 될까 모르겠다

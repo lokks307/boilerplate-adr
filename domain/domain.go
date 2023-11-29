@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"context"
 	"database/sql"
 
 	"github.com/lokks307/adr-boilerplate/env"
@@ -53,4 +54,27 @@ func initializeDB() error {
 
 func Conn() *sql.DB {
 	return domainConn
+}
+
+type InTransaction func(tx *sql.Tx) error
+
+func DoInTransaction(exec *sql.DB, fn InTransaction) error {
+	ctx := context.Background()
+
+	tx, err := exec.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	if err = fn(tx); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	if err = tx.Commit(); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return nil
 }

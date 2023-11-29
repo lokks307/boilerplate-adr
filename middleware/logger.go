@@ -8,7 +8,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/lokks307/adr-boilerplate/env"
-	"github.com/lokks307/go-util/djson"
+	"github.com/lokks307/djson/v2"
 	"github.com/mattn/go-colorable"
 	"github.com/sirupsen/logrus"
 )
@@ -54,7 +54,7 @@ func LogrusLoggerMiddleware() echo.MiddlewareFunc {
 				reqId = res.Header().Get(echo.HeaderXRequestID)
 			}
 
-			logJson := djson.NewDJSON()
+			logJson := djson.New()
 			logJson.Put(djson.Object{
 				"uri":      req.RequestURI,
 				"req_host": c.RealIP(),
@@ -62,7 +62,7 @@ func LogrusLoggerMiddleware() echo.MiddlewareFunc {
 				"time":     stop.Sub(start).String(),
 			})
 
-			logJsonStr := logJson.GetAsString()
+			logJsonStr := logJson.String()
 			logJsonStr = strings.TrimLeft(logJsonStr, "{")
 			logJsonStr = strings.TrimRight(logJsonStr, "}")
 

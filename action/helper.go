@@ -6,11 +6,11 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/lokks307/adr-boilerplate/types/e"
-	"github.com/lokks307/go-util/djson"
+	"github.com/lokks307/djson/v2"
 	"github.com/sirupsen/logrus"
 )
 
-func GetDjsonFromBody(ctx echo.Context, dvKey string) (*djson.DJSON, error) {
+func GetDjsonFromBody(ctx echo.Context, dvKey string) (*djson.JSON, error) {
 	if ctx.Request().Body == nil {
 		return nil, e.ActionErrGetDjsonFromBody1
 	}
@@ -24,7 +24,7 @@ func GetDjsonFromBody(ctx echo.Context, dvKey string) (*djson.DJSON, error) {
 
 	ctx.Request().Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
 
-	bodyJson := djson.NewDJSON().Parse(string(bodyBytes))
+	bodyJson := djson.New().Parse(string(bodyBytes))
 	if err != nil {
 		logrus.Error(err)
 		return nil, e.ActionErrGetDjsonFromBody3

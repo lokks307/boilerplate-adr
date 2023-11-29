@@ -6,6 +6,7 @@ require (
 	github.com/friendsofgo/errors v0.9.2
 	github.com/karlseguin/ccache/v2 v2.0.8
 	github.com/labstack/echo/v4 v4.6.2
+	github.com/lokks307/djson/v2 v2.0.4 // indirect
 	github.com/lokks307/go-util v1.1.4
 	github.com/mattn/go-colorable v0.1.11
 	github.com/mattn/go-sqlite3 v1.14.18 // indirect
@@ -13,7 +14,7 @@ require (
 	github.com/sirupsen/logrus v1.8.1
 	github.com/volatiletech/null/v8 v8.1.2
 	github.com/volatiletech/sqlboiler/v4 v4.8.3
-	github.com/volatiletech/strmangle v0.0.1
+	github.com/volatiletech/strmangle v0.0.4
 )
 
 replace (
