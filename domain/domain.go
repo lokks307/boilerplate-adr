@@ -5,6 +5,7 @@ import (
 
 	"github.com/lokks307/adr-boilerplate/env"
 	"github.com/lokks307/adr-boilerplate/types/e"
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/sirupsen/logrus"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	mssql "github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-mssql/driver"
@@ -33,6 +34,8 @@ func initializeDB() error {
 		dsn = mysql.MySQLBuildQueryString(env.Database.User, env.Database.Password, env.Database.DBName, env.Database.Host, env.Database.Port, env.Database.SSLMode)
 	case "mssql":
 		dsn = mssql.MSSQLBuildQueryString(env.Database.User, env.Database.Password, env.Database.DBName, env.Database.Host, env.Database.Port, env.Database.SSLMode)
+	case "sqlite3":
+		dsn = env.Database.Host
 	default:
 		return e.PreloadErrInitDBTypeUnsupport
 	}

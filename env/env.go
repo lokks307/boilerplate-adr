@@ -42,5 +42,7 @@ func Setup(configPath string) error {
 		return err
 	}
 
+	DisableLogMap = make(map[string]bool)
+
 	return nil
 }
