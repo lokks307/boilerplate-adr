@@ -8,21 +8,10 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/lokks307/adr-boilerplate/env"
-	"github.com/lokks307/go-util/djson"
+	"github.com/lokks307/djson/v2"
 	"github.com/mattn/go-colorable"
 	"github.com/sirupsen/logrus"
 )
-
-func NewDefaultEventLogger() echo.MiddlewareFunc {
-	fpLog, err := os.OpenFile(env.LOG_PATH, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		return nil
-	}
-
-	return middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Output: fpLog,
-	})
-}
 
 func init() {
 	logrus.SetFormatter(&logrus.TextFormatter{
@@ -32,6 +21,22 @@ func init() {
 	})
 	logrus.SetOutput(colorable.NewColorableStdout())
 	logrus.SetLevel(logrus.InfoLevel)
+}
+
+func NewDefaultEventLogger() echo.MiddlewareFunc {
+	fpLog, ferr := os.OpenFile(env.LOG_PATH, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if ferr != nil {
+		return func(next echo.HandlerFunc) echo.HandlerFunc {
+			return func(c echo.Context) (err error) {
+				logrus.Error(ferr)
+				return
+			}
+		}
+	}
+
+	return middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Output: fpLog,
+	})
 }
 
 func LogrusLoggerMiddleware() echo.MiddlewareFunc {
@@ -54,7 +59,7 @@ func LogrusLoggerMiddleware() echo.MiddlewareFunc {
 				reqId = res.Header().Get(echo.HeaderXRequestID)
 			}
 
-			logJson := djson.NewDJSON()
+			logJson := djson.New()
 			logJson.Put(djson.Object{
 				"uri":      req.RequestURI,
 				"req_host": c.RealIP(),
@@ -62,7 +67,7 @@ func LogrusLoggerMiddleware() echo.MiddlewareFunc {
 				"time":     stop.Sub(start).String(),
 			})
 
-			logJsonStr := logJson.GetAsString()
+			logJsonStr := logJson.String()
 			logJsonStr = strings.TrimLeft(logJsonStr, "{")
 			logJsonStr = strings.TrimRight(logJsonStr, "}")
 

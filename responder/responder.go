@@ -2,7 +2,7 @@ package responder
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/lokks307/go-util/djson"
+	"github.com/lokks307/djson/v2"
 )
 
 var JsonResponder *JSONResponder
@@ -16,11 +16,13 @@ func NewJSONResponder() *JSONResponder {
 }
 
 func (m *JSONResponder) Response(ctx echo.Context, code int, val interface{}) error {
-	// FIXME: default type handling??
 	switch t := val.(type) {
-	case *djson.DJSON:
-		return ctx.String(code, t.GetAsString())
+	case *djson.JSON:
+		return ctx.String(code, t.String())
+	case error:
+		return ctx.String(code, t.Error())
 	default:
+		// FIXME: default type handling??
 		return ctx.JSON(code, t)
 	}
 }
