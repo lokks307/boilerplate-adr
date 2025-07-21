@@ -1,0 +1,10 @@
+[db]
+Type    = "sqlite3"
+DBName  = "notset"
+Host    = "./Chinook.db"
+Port    = 33066
+User    = "notset"
+Password = "notset"
+SSLMode = "false"
+MaxOpenConn = 2
+MaxIdleTime = 60

@@ -4,8 +4,10 @@ import (
 	"flag"
 	"strconv"
 
-	"github.com/lokks307/adr-boilerplate/env"
 	"github.com/sirupsen/logrus"
+
+	"github.com/lokks307/adr-boilerplate/domain"
+	"github.com/lokks307/adr-boilerplate/env"
 )
 
 func main() {
@@ -23,6 +25,11 @@ func main() {
 	echoRouter.Init()
 	if *debugFlag {
 		logrus.SetLevel(logrus.TraceLevel)
+	}
+
+	if err := domain.DBLoad(); err != nil {
+		logrus.Error("domain LoadDB err=", err)
+		return
 	}
 
 	echoRouter.Run(":" + strconv.Itoa(*portNum))
