@@ -14,8 +14,7 @@ import (
 
 var lock = sync.Mutex{}
 
-type customerUsecase struct {
-}
+type customerUsecase struct{}
 
 var customerInstance *customerUsecase
 

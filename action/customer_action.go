@@ -21,9 +21,11 @@ func GetCustomerInfo(ctx echo.Context) error {
 		return responder.ResponseError(ctx, http.StatusBadRequest, e.ActionErrInvalidPathParam, e.ErrorWrap(err))
 	}
 
-	customer, err := usecase.Customer().ReadCustomerByID(idMap["customer_id"])
+	cid := idMap["customer_id"]
+
+	customer, err := usecase.Customer().ReadCustomerByID(cid)
 	if err != nil {
-		return responder.Response(ctx, http.StatusNotFound, "")
+		return responder.ResponseError(ctx, http.StatusNotFound, e.ActionErrNotFound, e.ErrorWrap(err))
 	}
 
 	res := djson.New().Put(djson.Object{
