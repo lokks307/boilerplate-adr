@@ -4,14 +4,13 @@ import (
 	"context"
 	"sync"
 
+	"github.com/sirupsen/logrus"
+	"github.com/volatiletech/sqlboiler/v4/boil"
+	. "github.com/volatiletech/sqlboiler/v4/queries/qm"
+
 	"github.com/lokks307/adr-boilerplate/domain"
 	"github.com/lokks307/adr-boilerplate/models"
-	"github.com/sirupsen/logrus"
 )
-
-// Notice - 싱글톤보다 더 나은 방법이 있다면 수정해주세요.
-// 이 객체를 선언할 곳을 마땅히 찾지 못해 싱글톤으로 구현합니다.
-// customerUsecase := usecase.NewCustomerUsecase()
 
 var lock = sync.Mutex{}
 
@@ -41,16 +40,20 @@ func Customer() domain.CustomerUsecase {
 }
 
 func (a *customerUsecase) ReadCustomerByID(cid int64) (*models.Customer, error) {
-	// exec boil.ContextExecutor
-	exec := domain.Conn()
 	ctx := context.Background()
-	found, err := models.FindCustomer(ctx, exec, cid)
+
+	customerModel, err := models.Customers(
+		Select(),
+		models.CustomerWhere.CustomerId.EQ(cid),
+	).One(ctx, boil.GetContextDB())
+
+	// noRow를 에러로 처리하지 않을 경우
+	// if errors.Is(err, sql.ErrNoRows) {
+	// 	return nil, e.ErrorWrap(err)
+	// }
 	if err != nil {
 		return nil, err
 	}
 
-	return found, nil
+	return customerModel, nil
 }
-
-// tx에 대한 고민이 더해져야 한다. 지금은 잘 이해하지 못하고 있는 것 같다.
-// mediease API에서  DoInTransaction을 검색해서 찾아볼 것

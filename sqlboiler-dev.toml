@@ -1,0 +1,7 @@
+[mysql]
+dbname  = ""
+host    = "dev-db-maria.cacvucxnblmt.ap-northeast-2.rds.amazonaws.com"
+port    = 33066
+user    = "admin"
+pass    = ""
+sslmode = "false"

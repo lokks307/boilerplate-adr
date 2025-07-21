@@ -8,7 +8,6 @@ require (
 	github.com/labstack/echo/v4 v4.6.2
 	github.com/lokks307/djson/v2 v2.0.7
 	github.com/mattn/go-colorable v0.1.11
-	github.com/mattn/go-sqlite3 v1.14.28
 	github.com/pelletier/go-toml v1.9.4
 	github.com/sirupsen/logrus v1.8.1
 	github.com/volatiletech/null/v8 v8.1.2

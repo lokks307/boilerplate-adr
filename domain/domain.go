@@ -4,15 +4,16 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/lokks307/adr-boilerplate/env"
-	"github.com/lokks307/adr-boilerplate/types/e"
 	"github.com/sirupsen/logrus"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	mssql "github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-mssql/driver"
 	mysql "github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-mysql/driver"
+
+	"github.com/lokks307/adr-boilerplate/e"
+	"github.com/lokks307/adr-boilerplate/env"
 )
 
-var domainConn *sql.DB
+var mainDBConn *sql.DB
 
 func DBLoad() error {
 	if err := initializeDB(); err != nil {
@@ -41,18 +42,18 @@ func initializeDB() error {
 	}
 
 	var dbErr error
-	domainConn, dbErr = sql.Open(env.Database.Type, dsn)
+	mainDBConn, dbErr = sql.Open(env.Database.Type, dsn)
 	if dbErr != nil {
 		logrus.Error(dbErr)
 		return e.PreloadErrInitDBConnFailed
 	}
 
-	boil.SetDB(domainConn)
+	boil.SetDB(mainDBConn)
 	return nil
 }
 
-func Conn() *sql.DB {
-	return domainConn
+func MainDBConn() *sql.DB {
+	return mainDBConn
 }
 
 type InTransaction func(tx *sql.Tx) error

@@ -2,10 +2,11 @@ package action
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/labstack/echo/v4"
+
 	"github.com/lokks307/adr-boilerplate/domain/usecase"
+	"github.com/lokks307/adr-boilerplate/e"
 	"github.com/lokks307/adr-boilerplate/responder"
 	"github.com/lokks307/djson/v2"
 )
@@ -15,13 +16,12 @@ func EchoHello(ctx echo.Context) error {
 }
 
 func GetCustomerInfo(ctx echo.Context) error {
-	cid := ctx.Param("customer_id")
-	cidInt, err := strconv.ParseInt(cid, 10, 64)
+	idMap, err := GetIntPathParamToMap(ctx, "customer_id")
 	if err != nil {
-		return responder.Response(ctx, http.StatusBadRequest, "")
+		return responder.ResponseError(ctx, http.StatusBadRequest, e.ActionErrInvalidPathParam, e.ErrorWrap(err))
 	}
 
-	customer, err := usecase.Customer().ReadCustomerByID(cidInt)
+	customer, err := usecase.Customer().ReadCustomerByID(idMap["customer_id"])
 	if err != nil {
 		return responder.Response(ctx, http.StatusNotFound, "")
 	}
