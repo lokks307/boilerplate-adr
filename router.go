@@ -2,7 +2,8 @@ package main
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/lokks307/adr-boilerplate/action/customer_action"
+
+	"github.com/lokks307/adr-boilerplate/action"
 	"github.com/lokks307/adr-boilerplate/env"
 	"github.com/lokks307/adr-boilerplate/middleware"
 )
@@ -19,14 +20,14 @@ var RouteMap = []Route{
 	{
 		Method:     "GET",
 		Path:       "/heartbeat",
-		Action:     customer_action.EchoHello,
+		Action:     action.EchoHello,
 		Middleware: []echo.MiddlewareFunc{},
 		DisableLog: true,
 	},
 	{
 		Method:     "GET",
 		Path:       "/customer/:customer_id",
-		Action:     customer_action.GetCustomerInfo,
+		Action:     action.GetCustomerInfo,
 		Middleware: []echo.MiddlewareFunc{},
 	},
 }

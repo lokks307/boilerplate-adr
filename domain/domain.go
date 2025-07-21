@@ -6,7 +6,6 @@ import (
 
 	"github.com/lokks307/adr-boilerplate/env"
 	"github.com/lokks307/adr-boilerplate/types/e"
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/sirupsen/logrus"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 	mssql "github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-mssql/driver"

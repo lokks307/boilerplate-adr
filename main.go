@@ -4,10 +4,10 @@ import (
 	"flag"
 	"strconv"
 
-	"github.com/lokks307/adr-boilerplate/action"
+	"github.com/sirupsen/logrus"
+
 	"github.com/lokks307/adr-boilerplate/domain"
 	"github.com/lokks307/adr-boilerplate/env"
-	"github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -25,11 +25,6 @@ func main() {
 	echoRouter.Init()
 	if *debugFlag {
 		logrus.SetLevel(logrus.TraceLevel)
-	}
-
-	if err := action.PreLoad(); err != nil {
-		logrus.Error("action preload err=", err)
-		return
 	}
 
 	if err := domain.DBLoad(); err != nil {

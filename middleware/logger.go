@@ -13,17 +13,6 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func NewDefaultEventLogger() echo.MiddlewareFunc {
-	fpLog, err := os.OpenFile(env.LOG_PATH, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		return nil
-	}
-
-	return middleware.LoggerWithConfig(middleware.LoggerConfig{
-		Output: fpLog,
-	})
-}
-
 func init() {
 	logrus.SetFormatter(&logrus.TextFormatter{
 		TimestampFormat: "060102 15:04:05.000",
@@ -32,6 +21,22 @@ func init() {
 	})
 	logrus.SetOutput(colorable.NewColorableStdout())
 	logrus.SetLevel(logrus.InfoLevel)
+}
+
+func NewDefaultEventLogger() echo.MiddlewareFunc {
+	fpLog, ferr := os.OpenFile(env.LOG_PATH, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if ferr != nil {
+		return func(next echo.HandlerFunc) echo.HandlerFunc {
+			return func(c echo.Context) (err error) {
+				logrus.Error(ferr)
+				return
+			}
+		}
+	}
+
+	return middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Output: fpLog,
+	})
 }
 
 func LogrusLoggerMiddleware() echo.MiddlewareFunc {
