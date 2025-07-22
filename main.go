@@ -8,6 +8,7 @@ import (
 
 	"github.com/lokks307/adr-boilerplate/domain"
 	"github.com/lokks307/adr-boilerplate/env"
+	"github.com/lokks307/adr-boilerplate/router"
 )
 
 func main() {
@@ -21,8 +22,7 @@ func main() {
 		return
 	}
 
-	var echoRouter Router
-	echoRouter.Init()
+	echoRouter := router.InitRouter()
 	if *debugFlag {
 		logrus.SetLevel(logrus.TraceLevel)
 	}
@@ -32,5 +32,8 @@ func main() {
 		return
 	}
 
-	echoRouter.Run(":" + strconv.Itoa(*portNum))
+	if err := echoRouter.Run(":" + strconv.Itoa(*portNum)); err != nil {
+		logrus.Error("server running err=", err)
+		return
+	}
 }

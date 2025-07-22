@@ -20,3 +20,5 @@ logs/
 *.log
 
 *.idea/
+
+adr-boilerplate

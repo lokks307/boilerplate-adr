@@ -2,12 +2,16 @@ package env
 
 import (
 	"path/filepath"
+	"strings"
+	"time"
 
 	"github.com/pelletier/go-toml"
 	"github.com/sirupsen/logrus"
+
+	"github.com/lokks307/adr-boilerplate/e"
 )
 
-var LOG_PATH = "/var/log/mediease.log"
+var LOG_PATH = "/var/log/boilerplate.log"
 var DisableLogMap map[string]bool
 var Database DatabaseSetting
 
@@ -21,7 +25,22 @@ type DatabaseSetting struct {
 	Port     int
 }
 
+var TZ *time.Location
+var IsProd bool
+
 func Setup(configPath string) error {
+	var terr error
+	TZ, terr = time.LoadLocation("Asia/Seoul")
+	if terr != nil {
+		return terr
+	}
+
+	if strings.Contains(configPath, "prod") {
+		IsProd = true
+	} else {
+		IsProd = false
+	}
+
 	rootDir, _ := filepath.Abs("./")
 
 	var configToml *toml.Tree
@@ -33,13 +52,13 @@ func Setup(configPath string) error {
 	}
 	if err != nil {
 		logrus.Error(err)
-		return err
+		return e.ErrorWrap(err)
 	}
 
 	dbToml := configToml.Get("db").(*toml.Tree)
 	if err := dbToml.Unmarshal(&Database); err != nil {
 		logrus.Error(err)
-		return err
+		return e.ErrorWrap(err)
 	}
 
 	DisableLogMap = make(map[string]bool)

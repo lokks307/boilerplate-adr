@@ -1,0 +1,8 @@
+[db]
+Type    = "mysql"
+DBName  = ""
+Host    = "dev-db-maria.cacvucxnblmt.ap-northeast-2.rds.amazonaws.com"
+Port    = 33066
+User    = "registryhub-dev"
+Password = ""
+SSLMode = "false"
