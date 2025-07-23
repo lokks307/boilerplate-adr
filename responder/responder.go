@@ -54,6 +54,10 @@ func ResponseError(c echo.Context, code int, res error, internalMsg any) error {
 	return c.String(code, res.Error())
 }
 
+func ResponseEmptyObjectOK(ctx echo.Context) error {
+	return Response(ctx, http.StatusOK, djson.NewObject())
+}
+
 func SendTeamsMsg(path, title string, errMsg string) {
 	if !env.IsProd {
 		path = "[DEVELOP] " + path

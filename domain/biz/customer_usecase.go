@@ -1,4 +1,4 @@
-package usecase
+package biz
 
 import (
 	"context"
@@ -9,6 +9,7 @@ import (
 	. "github.com/volatiletech/sqlboiler/v4/queries/qm"
 
 	"github.com/lokks307/adr-boilerplate/domain"
+	"github.com/lokks307/adr-boilerplate/e"
 	"github.com/lokks307/adr-boilerplate/models"
 )
 
@@ -38,6 +39,27 @@ func Customer() domain.CustomerUsecase {
 	return getInstance()
 }
 
+func (a *customerUsecase) InsertCustomer(
+	firstName string,
+	lastName string,
+	email string,
+) error {
+	ctx := context.Background()
+
+	newCustomer := &models.Customer{
+		FirstName: firstName,
+		LastName:  lastName,
+		Email:     email,
+	}
+
+	err := newCustomer.Insert(ctx, boil.GetContextDB(), boil.Infer())
+	if err != nil {
+		return e.ErrorWrap(err)
+	}
+
+	return nil
+}
+
 func (a *customerUsecase) ReadCustomerByID(cid int64) (*models.Customer, error) {
 	ctx := context.Background()
 
@@ -51,7 +73,7 @@ func (a *customerUsecase) ReadCustomerByID(cid int64) (*models.Customer, error) 
 	// 	return nil, e.ErrorWrap(err)
 	// }
 	if err != nil {
-		return nil, err
+		return nil, e.ErrorWrap(err)
 	}
 
 	return customerModel, nil

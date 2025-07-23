@@ -9,6 +9,7 @@ import (
 // 복잡한 도메인 비즈니스 로직은 별도의 타입을 정의해서 인터페이스로 관리할 수 있을 것입니다.
 // 코드와 인터페이스를 분리하고 어떤 기능이 있는지 쉽게 파악할 수 있습니다.
 type CustomerUsecase interface {
+	InsertCustomer(firstName string, lastName string, email string) error
 	ReadCustomerByID(cid int64) (*models.Customer, error)
 
 	// Fetch(cursor string, num int64) (models.CustomerSlice, string, error)

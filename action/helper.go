@@ -28,7 +28,7 @@ func getDjsonFromBody(ctx echo.Context, dvKey string) (*djson.JSON, error) {
 
 	bodyJson := djson.New().Parse(string(bodyBytes))
 
-	dv, ok := DjsonValidatorMap[dvKey]
+	dv, ok := djsonValidatorMap[dvKey]
 	if dvKey == "" || !ok {
 		return nil, e.ActionErrGetDjsonFromBody3
 	}

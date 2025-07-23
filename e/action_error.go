@@ -2,6 +2,7 @@ package e
 
 import "errors"
 
+var ErrInitValidator = errors.New("[action][InitValidator] compilation failed")
 var ActionErrGetDjsonFromBody1 = errors.New("[action][getDjsonFromBody1] request body is nil ")
 var ActionErrGetDjsonFromBody2 = errors.New("[action][getDjsonFromBody2] cannot read body ")
 var ActionErrGetDjsonFromBody3 = errors.New("[action][getDjsonFromBody3] validator not exists")

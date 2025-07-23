@@ -6,6 +6,7 @@ import (
 
 	"github.com/sirupsen/logrus"
 
+	"github.com/lokks307/adr-boilerplate/action"
 	"github.com/lokks307/adr-boilerplate/domain"
 	"github.com/lokks307/adr-boilerplate/env"
 	"github.com/lokks307/adr-boilerplate/router"
@@ -25,6 +26,11 @@ func main() {
 	echoRouter := router.InitRouter()
 	if *debugFlag {
 		logrus.SetLevel(logrus.TraceLevel)
+	}
+
+	if err := action.InitValidator(); err != nil {
+		logrus.Error("action init err=", err)
+		return
 	}
 
 	if err := domain.DBLoad(); err != nil {

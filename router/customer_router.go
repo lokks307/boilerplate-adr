@@ -8,8 +8,14 @@ import (
 
 var customerRoutes = []Route{
 	{
+		Method:     "POST",
+		Path:       "/customers",
+		Action:     action.InsertCustomer,
+		Middleware: []echo.MiddlewareFunc{},
+	},
+	{
 		Method:     "GET",
-		Path:       "/customer/:customer_id",
+		Path:       "/customers/:customer_id",
 		Action:     action.GetCustomerInfo,
 		Middleware: []echo.MiddlewareFunc{},
 	},
