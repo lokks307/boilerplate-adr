@@ -114,6 +114,8 @@ func jsonEscapeString(value string) string {
 			sb.WriteByte('\\')
 			sb.WriteByte(c)
 			sb.WriteByte(c)
+		default:
+			sb.WriteByte(c)
 		}
 	}
 
